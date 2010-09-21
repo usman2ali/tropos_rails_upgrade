@@ -58,6 +58,12 @@ class ApplicationCheckerTest < ActiveSupport::TestCase
     assert @checker.alerts.has_key?("Soon-to-be-deprecated ActiveRecord calls")
   end
   
+  def test_check_svn_subdirs_are_not_included
+    make_file("app/models/.svn/text-base", "foo.rb.tmp", "Post.find(:all)")
+    @checker.check_ar_methods
+    assert @checker.alerts.empty?
+  end
+  
   def test_check_validation_on_methods
     make_file("app/models", "post.rb", "validate_on_create :comments_valid?")
     @checker.check_validation_on_methods
