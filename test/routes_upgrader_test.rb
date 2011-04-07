@@ -158,19 +158,19 @@ end
 
   def test_generates_code_for_delete_route
     routes_code = %Q{
-      ActionController::Routing::Routes.draw do |map|
-        map.sign_out '/sign_out', :controller => 'sessions', :action => 'destroy', :method => :delete
-      end
+ActionController::Routing::Routes.draw do |map|
+  map.sign_out '/sign_out', :controller => 'sessions', :action => 'destroy', :method => :delete
+end
     }
 
     new_routes_code = %Q{
-      MyApplication::Application.routes.draw do
-        match '/sign_out' => 'sessions#destroy', :as => :sign_out, :via => 'delete'
-      end
+MyApplication::Application.routes.draw do
+  match '/sign_out' => 'sessions#destroy', :as => :sign_out, :via => 'delete'
+end
     }
 
     upgrader = Rails::Upgrading::RoutesUpgrader.new
     upgrader.routes_code = routes_code
-    assert_equal new_routes_code, upgrader.generate_new_routes
+    assert_equal new_routes_code.strip, upgrader.generate_new_routes.strip
   end
 end
