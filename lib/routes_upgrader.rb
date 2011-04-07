@@ -277,7 +277,9 @@ module Rails
       def to_route_code
         # preserve :only & :except options
         copied_options = @options.reject { |k,v| ![:only, :except].member?(k) }
-        copied_options_str = copied_options.empty? ? '' : ', ' + copied_options.inspect.gsub(/\A\{|\}\z/, '')
+        unless copied_options.empty?
+          copied_options_str = ", " + copied_options.map { |k, v| "#{k.inspect} => #{v.inspect}" }.join(",")
+        end
         
         if !@children.empty? || @options.has_key?(:collection) || @options.has_key?(:member)
           prefix = ["#{route_method} :#{@name}#{copied_options_str} do"]
