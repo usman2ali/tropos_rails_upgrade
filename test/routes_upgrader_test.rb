@@ -89,6 +89,11 @@ end
     assert_equal "resources :hats do\ncollection do\npost :toss\nend\nmember do\nget :wear\nend\n\nend\n", route.to_route_code
   end
   
+  def test_generates_code_for_resources_with_multiple_special_methods_per_name
+    route = Rails::Upgrading::FakeResourceRoute.new("hats", {:member => {:wear => [:get, :put]}, :collection => {:toss => [:get, :post]}})
+      assert_equal "resources :hats do\ncollection do\nget :toss\npost :toss\nend\nmember do\nget :wear\nput :wear\nend\n\nend\n", route.to_route_code
+  end
+  
   def test_generates_code_for_route_with_extra_params
     route = Rails::Upgrading::FakeRoute.new("/about", {:controller => 'static', :action => 'about', :something => 'extra'})
     assert_equal "match '/about' => 'static#about', :something => 'extra'", route.to_route_code
