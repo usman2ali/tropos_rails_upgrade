@@ -378,11 +378,11 @@ module Rails
         value = ""
         # Specifically double quote for finding 'test_help'
         command = if double_quote
-                    "grep -r #{"-P" if perl_regex} \"#{text}\" #{where} | grep -v \.svn"
+                    "grep -rH #{"-P" if perl_regex} \"#{text}\" #{where} | grep -v \.svn"
                   else
-                    "grep -r #{"-P" if perl_regex} '#{text}' #{where} | grep -v \.svn"
+                    "grep -rH #{"-P" if perl_regex} '#{text}' #{where} | grep -v \.svn"
                   end
-        
+
         Open3.popen3(command) do |stdin, stdout, stderr|
           value = stdout.read
         end
