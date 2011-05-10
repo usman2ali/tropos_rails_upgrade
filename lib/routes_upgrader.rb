@@ -36,7 +36,7 @@ module Rails
       end
       
       def routes_code
-        File.read("config/routes.rb")
+        File.read("config/application_routes/bb_routes.rb")
       end
       
       def upgrade_routes
